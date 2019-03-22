@@ -1297,14 +1297,18 @@ module.exports = function(DORA, config) {
   function QuizMessageMultiUrl(node, options) {
     var isTemplated = (options||"").indexOf("{{") != -1;
     const params = options.split('/');
+    const title = params[0];
     if (params.length > 1) {
        node.nextLabel(params.slice(1).join('/'))
+       var url = params.slice(1).join('/');
+    } else {
+       var url = params[1];
     }
     node.on("input", function(msg) {
       initMessage(msg);
       let message = {
-        title: params[0],
-        url: params[1],
+        title: title,
+        url: url,
       }
       if (isTemplated) {
           message = utils.mustache.render(message, msg);
