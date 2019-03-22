@@ -1219,7 +1219,7 @@ module.exports = function(DORA, config) {
     if (typeof msg.quiz.title === 'undefined') msg.quiz.title = '';
     if (typeof msg.quiz.message === 'undefined') msg.quiz.message = {};
     if (typeof msg.quiz.message.messages === 'undefined') msg.quiz.message.messages = [];
-    if (typeof msg.quiz.message.urls === 'undefined') msg.quiz.message.urls = [];
+    if (typeof msg.quiz.message.links === 'undefined') msg.quiz.message.links = [];
   }
 
   /**
@@ -1298,11 +1298,15 @@ module.exports = function(DORA, config) {
     var isTemplated = (options||"").indexOf("{{") != -1;
     node.on("input", function(msg) {
       initMessage(msg);
-      let message = options;
+      //let message = options;
+      let message = {
+        title: "LINK",
+        url: options,
+      }
       if (isTemplated) {
           message = utils.mustache.render(message, msg);
       }
-      msg.quiz.message.urls.push(message);
+      msg.quiz.message.links.push(message);
       node.send(msg);
     });
   }
