@@ -1343,13 +1343,13 @@ module.exports = function(DORA, config) {
         pages: [],
         title: msg.quiz.message.title,
         messages: msg.quiz.message.messages,
-        urls: msg.quiz.message.urls,
-        links: [
+        links: msg.quiz.message.links,
+        /*links: [
           {
             title: msg.quiz.message.link,
             url: msg.quiz.message.url,
           }
-        ],
+        ],*/
       })
       node.send(msg);
     });
