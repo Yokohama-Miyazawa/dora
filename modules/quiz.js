@@ -1219,6 +1219,7 @@ module.exports = function(DORA, config) {
     if (typeof msg.quiz.title === 'undefined') msg.quiz.title = '';
     if (typeof msg.quiz.message === 'undefined') msg.quiz.message = {};
     if (typeof msg.quiz.message.messages === 'undefined') msg.quiz.message.messages = [];
+    if (typeof msg.quiz.message.urls === 'undefined') msg.quiz.message.urls = [];
   }
 
   /**
@@ -1293,6 +1294,24 @@ module.exports = function(DORA, config) {
    *
    *
    */
+  function QuizMessageMultiUrl(node, options) {
+    var isTemplated = (options||"").indexOf("{{") != -1;
+    node.on("input", function(msg) {
+      initMessage(msg);
+      let message = options;
+      if (isTemplated) {
+          message = utils.mustache.render(message, msg);
+      }
+      msg.quiz.message.urls.push(message);
+      node.send(msg);
+    });
+  }
+  DORA.registerType('message.multiurl', QuizMessageMultiUrl);
+
+  /**
+   *
+   *
+   */
   function QuizMessageLink(node, options) {
     var isTemplated = (options||"").indexOf("{{") != -1;
     node.on("input", function(msg) {
@@ -1320,6 +1339,7 @@ module.exports = function(DORA, config) {
         pages: [],
         title: msg.quiz.message.title,
         messages: msg.quiz.message.messages,
+        urls: msg.quiz.message.urls,
         links: [
           {
             title: msg.quiz.message.link,
